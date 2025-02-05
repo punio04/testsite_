@@ -1,4 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
+
+<?php
 // フォームから送信されたデータを取得
 $company = $_POST['company'] ?? '';
 $name = $_POST['name'] ?? '';
@@ -29,10 +35,16 @@ $headers .= "Reply-To: " . $email . "\r\n";
 
 // メール送信処理
 if (mail($to, $subject, $body, $headers)) {
-  // 送信成功時はサンクスページへリダイレクト
   header("Location: thanks.html");
   exit;
 } else {
-  // 送信失敗時
+  error_log("メール送信失敗: " . print_r(error_get_last(), true)); // ログに出力
   echo "メールの送信に失敗しました。もう一度お試しください。";
+}
+
+
+if (mail($to, "テスト", "これはテストメールです", "From: gude_0417@icloud.com")) {
+  echo "送信成功！";
+} else {
+  echo "送信失敗！";
 }
